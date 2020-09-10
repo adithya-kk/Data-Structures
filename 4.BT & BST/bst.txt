@@ -1,0 +1,203 @@
+#include<iostream.h>
+#include<conio.h>
+#include<malloc.h>
+struct node
+{
+ int val;
+ struct node*lp,*rp;
+}
+*root=NULL;
+struct node *getnode()
+{
+ struct node*t;
+ t=(struct node*)malloc(sizeof(struct node));
+ cout<<"Enter the data"<<endl;
+ cin>>t->val;
+ t->lp=t->rp=NULL;
+ return t;
+}
+class bst
+{
+ public:
+ void insert(node*,node*);
+ void del(node*,int);
+ void preorder(node*);
+ void inorder(node*);
+ void postorder(node*);
+};
+ void bst::insert(node*t,node*temp)
+ {
+  if(root==NULL)
+  {
+   temp=getnode();
+   root=temp;
+   cout<<"Root node is inserted"<<endl;
+  }
+  else
+  {
+   if(t->val==temp->val)
+   {
+    cout<<"Element already in tree"<<endl;
+   }
+   else if(t->val>temp->val)
+   {
+    if(t->lp!=NULL)
+    insert(t->lp,temp);
+    else
+    {
+     temp=getnode();
+     t->lp=temp;
+    }
+   }
+    else
+    {
+     if(t->rp!=NULL)
+     {
+      insert(t->rp,temp);
+     }
+     else
+     {
+      temp=getnode();
+      t->rp=temp;
+     }
+    }
+  }
+ }
+ void bst::preorder(node*t)
+ {
+  if(root==NULL)
+  {
+   cout<<"Tree is empty"<<endl;
+  }
+  if(t!=NULL)
+  {
+   preorder(t->lp);
+   preorder(t->rp);
+   cout<<t->val<<" ";
+  }
+ }
+ void bst::postorder(node*t)
+ {
+  if(root==NULL)
+  {
+   cout<<"Tree is empty"<<endl;
+  }
+  if(t!=NULL)
+  {
+
+   cout<<t->val<<" ";
+   postorder(t->lp);
+   postorder(t->rp);
+  }
+ }
+ void bst::inorder(node*t)
+ {
+  if(root==NULL)
+  {
+   cout<<"Tree is empty"<<endl;
+  }
+  if(t!=NULL)
+  {
+   inorder(t->lp);
+   cout<<t->val<<" ";
+   inorder(t->rp);
+  }
+ }
+ void bst::del(node*t,int m)
+ {
+  if(m!=t->val)
+  {
+   if(t!=NULL)
+   {
+    if(m<t->val)
+    del(t->lp,m);
+    if(m>t->val)
+    del(t->rp,m);
+   }
+   else
+   {
+    cout<<"Number not found"<<endl;
+   }
+  }
+  if(m==t->val)
+  {
+   struct node*temp;
+   if(t->lp==t->rp==NULL)
+   {
+     temp=t;
+     free(temp);
+     cout<<"This value have been deleted"<<endl;
+   }
+   if(t->lp==NULL&&t->rp!=NULL)
+   {
+    temp=t;
+    t=t->rp;
+    free(temp);
+    cout<<"This value have been deleted"<<endl;
+   }
+   else if(t->rp==NULL&&t->lp!=NULL)
+   {
+    temp=t;
+    t=t->lp;
+    free(temp);
+    cout<<"This value have been deleted"<<endl;
+   }
+   else if(t->lp!=NULL&&t->rp!=NULL)
+   {
+    cout<<"This value can not be deleted"<<endl;
+   }
+  }
+ }
+void main()
+{
+ clrscr();
+ bst obj;
+ int c,d,s;
+ node*q;
+ gotoxy(30,wherey());
+ cout<<"BINARY SEARCH TREE"<<endl;
+ cout<<"1.Insert\n2.Delete\n3.Display\n4.End"<<endl;
+ do
+ {
+  cout<<"Enter your choice"<<endl;
+  cin>>c;
+  switch(c)
+  {
+   case 1:
+   obj.insert(root,q);
+   break;
+   case 2:
+   cout<<"Enter data to be deleted"<<endl;
+   cin>>s;
+   obj.del(root,s);
+   break;
+   case 3:
+   cout<<"Enter Your Choice"<<endl;
+   cout<<"1.Preorder\n2.Inorder\n3.Postorder"<<endl;
+   cin>>d;
+   if(d==1)
+   {
+    obj.preorder(root);
+    cout<<endl;
+   }
+   if(d==2)
+   {
+    obj.inorder(root);
+    cout<<endl;
+   }
+   if(d==3)
+   {
+    obj.postorder(root);
+    cout<<endl;
+   }
+   break;
+   case 4:
+   gotoxy(33,wherey());
+   cout<<"\3Thank You\3";
+   break;
+   default:
+   cout<<"Wrong Choice"<<endl;
+  }
+ }while(c!=4);
+ getch();
+}

@@ -1,0 +1,179 @@
+#include<iostream.h>
+#include<conio.h>
+#include<malloc.h>
+struct node
+{
+ int val;
+ struct node*lp,*rp;
+}
+*root=NULL;
+struct node *getnode()
+{
+ struct node*t;
+ t=(struct node*)malloc(sizeof(struct node));
+ cout<<"Enter the data"<<endl;
+ cin>>t->val;
+ t->lp=t->rp=NULL;
+ return t;
+}
+class bt
+{
+ public:
+ int arr[100],count;
+ bt()
+ {
+  count=0;
+ }
+ void insert(node*,node*);
+ void del(node*,int);
+ void preorder(node*);
+ void inorder(node*);
+ void postorder(node*);
+ void search(node*,node*,int);
+};
+ void bt::insert(node*q,node*temp)
+ {
+  q=root;
+  if(root==NULL)
+  {
+   temp=getnode();
+   root=temp;
+   cout<<"Root node is inserted"<<endl;
+   arr[count]=root->val;
+   count++;
+  }
+  else if(root!=NULL)
+  {
+   int p=(count-1)/2;
+   search(q,root,arr[p]);
+   if(q->lp==NULL)
+   {
+    temp=getnode();
+    q->lp=temp;
+    arr[count]=temp->val;
+    count++;
+   }
+   else if(q->lp!=NULL)
+   {
+    temp=getnode();
+    q->rp=temp;
+    arr[count]=temp->val;
+    count++;
+   }
+  }
+ }
+ void bt::preorder(node*t)
+ {
+  if(root==NULL)
+  {
+   cout<<"Tree is empty"<<endl;
+  }
+  if(t!=NULL)
+  {
+   preorder(t->lp);
+   preorder(t->rp);
+   cout<<t->val<<" ";
+  }
+ }
+ void bt::postorder(node*t)
+ {
+  if(root==NULL)
+  {
+   cout<<"Tree is empty"<<endl;
+  }
+  if(t!=NULL)
+  {
+   cout<<t->val<<" ";
+   postorder(t->lp);
+   postorder(t->rp);
+  }
+ }
+ void bt::inorder(node*t)
+ {
+  if(root==NULL)
+  {
+   cout<<"Tree is empty"<<endl;
+  }
+  if(t!=NULL)
+  {
+   inorder(t->lp);
+   cout<<t->val<<" ";
+   inorder(t->rp);
+  }
+ }
+  void bt::search(node*f,node*t,int i)
+ {
+  if(t!=NULL)
+  {
+   if(t->val!=i){
+   search(f,t->lp,i);
+   search(f,t->rp,i);
+   }
+   else if(t->val==i)
+   {
+    f=t;
+   }
+  }
+ }
+  void bt::del(node*t,int m)
+ {
+  node*temp;
+  search(temp,root,m);
+  if(t->lp==t->rp==NULL)
+   temp=t;
+  cout<<"Value have been deleted"<<endl;
+  free(temp);
+ }
+void main()
+{
+ clrscr();
+ bt obj;
+ int c,d,s;
+ node*q;
+ gotoxy(32,wherey());
+ cout<<"BINARY TREE"<<endl;
+ cout<<"1.Insert\n2.Delete\n3.Display\n4.End"<<endl;
+ do
+ {
+  cout<<"Enter your choice"<<endl;
+  cin>>c;
+  switch(c)
+  {
+   case 1:
+   obj.insert(root,q);
+   break;
+   case 2:
+   cout<<"Enter data to be deleted"<<endl;
+   cin>>s;
+   obj.del(root,s);
+   break;
+   case 3:
+   cout<<"Enter Your Choice"<<endl;
+   cout<<"1.Preorder\n2.Inorder\n3.Postorder"<<endl;
+   cin>>d;
+   if(d==1)
+   {
+    obj.preorder(root);
+    cout<<endl;
+   }
+   if(d==2)
+   {
+    obj.inorder(root);
+    cout<<endl;
+   }
+   if(d==3)
+   {
+    obj.postorder(root);
+    cout<<endl;
+   }
+   break;
+   case 4:
+   gotoxy(33,wherey());
+   cout<<"\3Thank You\3";
+   break;
+   default:
+   cout<<"Wrong Choice"<<endl;
+  }
+ }while(c!=4);
+ getch();
+}
